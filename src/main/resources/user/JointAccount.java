@@ -41,8 +41,4 @@ public class JointAccount extends User{
 	@Override
 	public void changePin() {
 	}
-
-	public void transferToJoint() {
-	}
-
 }
