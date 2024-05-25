@@ -15,7 +15,9 @@ public abstract class User {
 
 	public abstract void displayUserMenu();
 
-	public abstract void makeAWithdrawal(double amount);
+	public abstract void showAccountBalance();
+
+	public abstract boolean makeAWithdrawal(double amount);
 
 	public abstract void makeADeposit(double amount);
 
