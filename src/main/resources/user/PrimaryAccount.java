@@ -63,6 +63,7 @@ public class PrimaryAccount extends User{
 		String message = "Account Balance: $" + balance + "\nEnquiry Date and Time: " + formattedDateTime;
 
 		JOptionPane.showMessageDialog(null, message, "Account Balance", JOptionPane.INFORMATION_MESSAGE);
+		displayUserMenu();
 	}
 
 	@Override
