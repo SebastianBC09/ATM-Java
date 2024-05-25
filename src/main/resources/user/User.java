@@ -17,9 +17,9 @@ public abstract class User {
 
 	public abstract void showAccountBalance();
 
-	public abstract boolean makeAWithdrawal(double amount);
+	public abstract void makeAWithdrawal();
 
-	public abstract void makeADeposit(double amount);
+	public abstract void makeADeposit();
 
-	public abstract void changePin(String newPin);
+	public abstract void changePin();
 }
