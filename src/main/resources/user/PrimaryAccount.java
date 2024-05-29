@@ -2,9 +2,14 @@
 package main.resources.user;
 
 //IMPORTS
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.JOptionPane;
+import javax.swing.*;
+
 
 public class PrimaryAccount extends User{
 	//ATTRIBUTES
@@ -12,6 +17,42 @@ public class PrimaryAccount extends User{
 	//CONSTRUCTOR
 	public PrimaryAccount(String userId, String name, String pin, double balance) {
 		super(userId, name, pin, balance);
+	}
+
+	//SETTERS
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPin(String pin) {
+		this.pin = pin;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	//GETTERS
+
+	public String getUserId() {
+		return this.userId;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getPin() {
+		return this.pin;
+	}
+
+	public double getBalance() {
+		return this.balance;
 	}
 
 	//METHODS
@@ -73,13 +114,42 @@ public class PrimaryAccount extends User{
 
 	@Override
 	public void makeADeposit() {
+		JFileChooser fileChooser = new JFileChooser();
+		int returnValue = fileChooser.showOpenDialog(null);
+
+		if(returnValue == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
+			readFileAndProcess(selectedFile);
+		}
 	}
+
+	private void readFileAndProcess(File file) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				// Process each line from the file (e.g., assuming it contains deposit amounts)
+				System.out.println("Processing: " + line);
+				double depositAmount = Double.parseDouble(line);
+				this.setBalance(depositAmount);
+			}
+			JOptionPane.showMessageDialog(null, "File processed successfully!");
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred while reading the file.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		displayUserMenu();
+	}
+
+
 
 	@Override
 	public void changePin() {
+
+		displayUserMenu();
 	}
 
 	public void transferToJoint() {
+
+		displayUserMenu();
 	}
 
 }
