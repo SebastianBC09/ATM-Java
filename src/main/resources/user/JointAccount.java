@@ -13,6 +13,44 @@ public class JointAccount extends User{
 		super(userId, name, pin, balance);
 	}
 
+	//SETTERS
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPin(String pin) {
+		this.pin = pin;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
+	//GETTERS
+
+	public String getUserId() {
+		return this.userId;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getPin() {
+		return this.pin;
+	}
+
+	public double getBalance() {
+		return this.balance;
+	}
+
+
+
 	@Override
 	public void displayUserMenu() {
 	}
