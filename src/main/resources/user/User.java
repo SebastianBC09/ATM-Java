@@ -15,6 +15,24 @@ public abstract class User {
 		this.balance = balance;
 	}
 
+	//SETTERS
+	public abstract void setUserId(String userId);
+
+	public abstract void setName(String name);
+
+	public abstract void setPin(String pin);
+
+	public abstract void setBalance(double balance);
+
+	//GETTERS
+	public abstract String getUserId();
+
+	public abstract String getName();
+
+	public abstract String getPin();
+
+	public abstract double getBalance();
+
 	//METHODS
 	public abstract void displayUserMenu();
 
