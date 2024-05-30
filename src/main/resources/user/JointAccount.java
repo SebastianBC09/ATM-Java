@@ -2,15 +2,21 @@
 package main.resources.user;
 
 //IMPORTS
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 public class JointAccount extends User{
+	//ATTRIBUTES
+	private boolean isJointAccount;
 
-
-	public JointAccount(String userId, String name, String pin, double balance) {
+	public JointAccount(String userId, String name, String pin, double balance, boolean jointAccount) {
 		super(userId, name, pin, balance);
+		setJointAccount(jointAccount);
 	}
 
 	//SETTERS
@@ -31,6 +37,10 @@ public class JointAccount extends User{
 		this.balance = balance;
 	}
 
+	public void setJointAccount(boolean jointAccount) {
+		this.isJointAccount = jointAccount;
+	}
+
 	//GETTERS
 
 	public String getUserId() {
@@ -49,10 +59,44 @@ public class JointAccount extends User{
 		return this.balance;
 	}
 
+	public boolean getJointAccount() {
+		return this.isJointAccount;
+	}
 
 
 	@Override
 	public void displayUserMenu() {
+		String menuOptions = """
+            Joint User Menu:
+            1. Check Balance
+            2. Withdraw
+            3. Deposit
+            4. Change account pin
+            5. Logout""";
+
+		String menuChoice = JOptionPane.showInputDialog(null, menuOptions, "ATM User Menu", JOptionPane.PLAIN_MESSAGE);
+
+		if (menuChoice != null) {
+			switch (menuChoice) {
+				case "1":
+					showAccountBalance();
+					break;
+				case "2":
+					makeAWithdrawal();
+					break;
+				case "3":
+					makeADeposit();
+					break;
+				case "4":
+					changePin();
+					break;
+				case "5":
+					return;
+				default:
+					JOptionPane.showMessageDialog(null, "Invalid menuChoice. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+					displayUserMenu(); // Display the menu again
+			}
+		}
 	}
 
 	@Override
@@ -65,6 +109,8 @@ public class JointAccount extends User{
 		String message = "Account Balance: $" + balance + "\nEnquiry Date and Time: " + formattedDateTime;
 
 		JOptionPane.showMessageDialog(null, message, "Account Balance", JOptionPane.INFORMATION_MESSAGE);
+
+		displayUserMenu();
 	}
 
 	@Override
@@ -87,6 +133,35 @@ public class JointAccount extends User{
 
 	@Override
 	public void makeADeposit() {
+		if (this.isJointAccount) {
+			JOptionPane.showMessageDialog(null, "Deposits are not allowed for a joint account.", "Deposit Error", JOptionPane.ERROR_MESSAGE);
+		} else {
+			// Implement the deposit logic if this is not a joint account
+			JFileChooser fileChooser = new JFileChooser();
+			int returnValue = fileChooser.showOpenDialog(null);
+
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = fileChooser.getSelectedFile();
+				readFileAndProcess(selectedFile);
+			}
+		}
+
+		displayUserMenu();
+	}
+
+	private void readFileAndProcess(File file) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				System.out.println("Processing: " + line);
+				double depositAmount = Double.parseDouble(line);
+				this.setBalance(this.getBalance() + depositAmount);
+			}
+			JOptionPane.showMessageDialog(null, "File processed successfully!");
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "An error occurred while reading the file.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		displayUserMenu();
 	}
 
 	@Override
@@ -109,6 +184,14 @@ public class JointAccount extends User{
 		} else {
 			JOptionPane.showMessageDialog(null, "Incorrect current PIN. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
+		displayUserMenu();
+	}
+
+	public void transferToJoint(PrimaryAccount primaryAccount) {
+		if (this.isJointAccount) {
+			JOptionPane.showMessageDialog(null, "Transfers are not allowed from a joint account.", "Transfer Error", JOptionPane.ERROR_MESSAGE);
+		}
+
 		displayUserMenu();
 	}
 }
