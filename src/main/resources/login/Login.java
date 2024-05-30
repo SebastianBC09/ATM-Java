@@ -16,7 +16,30 @@ public class Login {
 	//METHODS
 
 	public static User authentication(List<User> users) {
-		while (attemptCounter < 3) {
+		while (true) {
+			if (attemptCounter >= 3) {
+				long currentTime = System.currentTimeMillis();
+				long timePassed = currentTime - blockStartTime;
+
+				if (timePassed < 60000) {
+					JOptionPane.showMessageDialog(null, "Too many failed attempts. Please wait for 60 seconds before trying again.", "Access Blocked", JOptionPane.ERROR_MESSAGE);
+					try {
+						Thread.sleep(60000 - timePassed);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				attemptCounter = 0; // Reset counter after block period
+			}
+
+			String[] options = {"Login", "Exit"};
+			int choice = JOptionPane.showOptionDialog(null, "Choose an option:", "Authentication",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+
+			if (choice == 1) { // User chose "Exit"
+				return null;
+			}
+
 			String userId = JOptionPane.showInputDialog(null, "Enter User ID:", "Login", JOptionPane.PLAIN_MESSAGE);
 			String userPin = JOptionPane.showInputDialog(null, "Enter Password:", "Login", JOptionPane.PLAIN_MESSAGE);
 
@@ -32,17 +55,10 @@ public class Login {
 			if (attemptCounter >= 3) {
 				blockStartTime = System.currentTimeMillis();
 				JOptionPane.showMessageDialog(null, "Too many failed attempts. Please wait for 60 seconds before trying again.", "Access Blocked", JOptionPane.ERROR_MESSAGE);
-				attemptCounter = 0;
-				try {
-					Thread.sleep(60000); // Block for 60 seconds
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Invalid User ID or Password. Try again.", "Login Failed", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		return null;
 	}
 
 	public static void performPostLoginActions(User authenticatedUser) {
