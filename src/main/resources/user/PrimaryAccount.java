@@ -75,7 +75,7 @@ public class PrimaryAccount extends User{
 			3. Deposit
 			4. Transfer to Joint Account
 			5. Change account pin
-			6. Exit""";
+			6. Logout""";
 
 		String menuChoice = JOptionPane.showInputDialog(null, menuOptions, "ATM User Menu", JOptionPane.PLAIN_MESSAGE);
 
@@ -96,7 +96,7 @@ public class PrimaryAccount extends User{
 				case "5":
 					changePin();
 				case "6":
-					System.exit(0); // Exit the program
+					return;
 				default:
 					JOptionPane.showMessageDialog(null, "Invalid menuChoice. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
 					displayUserMenu(); // Display the menu again
