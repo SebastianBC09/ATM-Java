@@ -13,10 +13,12 @@ import javax.swing.*;
 
 public class PrimaryAccount extends User{
 	//ATTRIBUTES
+	private JointAccount jointAccount;
 
 	//CONSTRUCTOR
-	public PrimaryAccount(String userId, String name, String pin, double balance) {
+	public PrimaryAccount(String userId, String name, String pin, double balance, JointAccount jointAccount) {
 		super(userId, name, pin, balance);
+		this.setJointAccount(jointAccount);
 	}
 
 	//SETTERS
@@ -37,6 +39,10 @@ public class PrimaryAccount extends User{
 		this.balance = balance;
 	}
 
+	public void setJointAccount(JointAccount jointAccount) {
+		this.jointAccount = jointAccount;
+	}
+
 	//GETTERS
 
 	public String getUserId() {
@@ -53,6 +59,10 @@ public class PrimaryAccount extends User{
 
 	public double getBalance() {
 		return this.balance;
+	}
+
+	public JointAccount getJointAccount() {
+		return this.jointAccount;
 	}
 
 	//METHODS
@@ -81,7 +91,7 @@ public class PrimaryAccount extends User{
 					makeADeposit();
 					break;
 				case "4":
-					transferToJoint();
+					transferToJoint(jointAccount);
 					break;
 				case "5":
 					changePin();
@@ -109,7 +119,20 @@ public class PrimaryAccount extends User{
 
 	@Override
 	public void makeAWithdrawal() {
+		String[] options = {"20", "50", "100", "200"};
+		String choice = (String) JOptionPane.showInputDialog(null, "Choose withdrawal amount:", "Withdrawal",
+			JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
+		if (choice != null) {
+			double withdrawalAmount = Double.parseDouble(choice);
+			if (this.balance >= withdrawalAmount) {
+				this.balance -= withdrawalAmount;
+				JOptionPane.showMessageDialog(null, "Withdrawal successful! New balance: $" + this.balance);
+			} else {
+				JOptionPane.showMessageDialog(null, "Insufficient funds for this withdrawal.", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		displayUserMenu();
 	}
 
 	@Override
@@ -143,12 +166,45 @@ public class PrimaryAccount extends User{
 
 	@Override
 	public void changePin() {
+		String currentPinInput = JOptionPane.showInputDialog(null, "Enter your current PIN:", "Change PIN", JOptionPane.PLAIN_MESSAGE);
 
+		if (currentPinInput != null && currentPinInput.equals(this.pin)) {
+			String newPin = JOptionPane.showInputDialog(null, "Enter your new PIN:", "Change PIN", JOptionPane.PLAIN_MESSAGE);
+			if (newPin != null && !newPin.isEmpty()) {
+				String confirmNewPin = JOptionPane.showInputDialog(null, "Confirm your new PIN:", "Change PIN", JOptionPane.PLAIN_MESSAGE);
+				if (newPin.equals(confirmNewPin)) {
+					this.pin = newPin;
+					JOptionPane.showMessageDialog(null, "Your PIN has been successfully changed.", "Success", JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null, "New PIN and confirmation do not match. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "New PIN cannot be empty. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Incorrect current PIN. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 		displayUserMenu();
 	}
 
-	public void transferToJoint() {
+	public void transferToJoint(JointAccount jointAccount) {
+		String transferAmountInput = JOptionPane.showInputDialog(null, "Enter the amount to transfer:", "Transfer to Joint Account", JOptionPane.PLAIN_MESSAGE);
 
+		if (transferAmountInput != null && !transferAmountInput.isEmpty()) {
+			try {
+				double transferAmount = Double.parseDouble(transferAmountInput);
+
+				if (this.balance >= transferAmount) {
+					this.balance -= transferAmount;
+					jointAccount.setBalance(jointAccount.getBalance() + transferAmount);
+					JOptionPane.showMessageDialog(null, "Transfer successful! New balance: $" + this.balance);
+				} else {
+					JOptionPane.showMessageDialog(null, "Insufficient funds for this transfer.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(null, "Invalid amount entered. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 		displayUserMenu();
 	}
 
