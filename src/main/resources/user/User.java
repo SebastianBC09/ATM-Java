@@ -43,4 +43,5 @@ public abstract class User {
 	public abstract void makeADeposit();
 
 	public abstract void changePin();
+
 }
