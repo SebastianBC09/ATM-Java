@@ -13,7 +13,10 @@
 3. [Non-Functional Requirements](#non-functional-requirements)
    - [Usability](#usability)
    - [Reliability](#reliability)
-4. [Conclusion](#conclusion)
+4. [Diagram Class](#diagram-class)
+5. [Use Case Diagram ](#use-case-diagram)
+7. [Activity Diagram ](#activity-diagram)
+8. [Conclusion](#conclusion)
 
 ## Introduction
 This document outlines the Software Requirements Specification (SRS) for our banking system. It describes the system's functional and non-functional requirements, providing a detailed overview for developers, testers, and stakeholders.
@@ -51,6 +54,18 @@ This document outlines the Software Requirements Specification (SRS) for our ban
 
 ### Reliability
 - **System Availability**: The system should be available 99.9% of the time.
+
+## Diagram Class
+
+![pladitor_diagram](https://github.com/SebastianBC09/ATM-Java/assets/53961155/f9ba53fa-8ad6-41f6-ad3b-5003fa93826c)
+
+## Use Case Diagram
+
+![Untitled Workspace](https://github.com/SebastianBC09/ATM-Java/assets/53961155/4a2bc787-c9a8-4b5d-8b9e-6a3ab6033554)
+
+## Activity Diagram
+
+![Activity Diagram](https://github.com/SebastianBC09/ATM-Java/assets/53961155/036dc359-d1cc-40a9-87be-3b6a39c04b56)
 
 ## Conclusion
 This document provides a comprehensive overview of the functional and non-functional requirements for the banking system. Adherence to these requirements will ensure the system meets user needs and maintains high standards of usability and reliability.
